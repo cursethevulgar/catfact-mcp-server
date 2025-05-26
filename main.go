@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"crypto/tls"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
@@ -29,6 +30,7 @@ func main() {
 }
 
 func catfactHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+    	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, err := http.Get("https://catfact.ninja/fact")
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch cat fact: %w", err)
